@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Alpha Admin · GameSloth</title>
+  <style>/*__ADMIN_STYLES__*/</style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <section id="login" class="login-screen" aria-labelledby="loginTitle">
+    <div class="login-card">
+      <div class="brand"><img class="brand-logo" src="__GAMESLOTH_LOGO__" alt="GameSloth-logo" width="44" height="44"><span>GameSloth<span class="brand-sub">ALPHA ADMIN</span></span></div>
+      <div class="login-heading"><span class="eyebrow">GAMESLOTH ADMIN</span><h1 id="loginTitle">Your alpha workspace.</h1><p>Review new testers, support your creators and manage access in one place.</p></div>
+      <form id="loginForm">
+        <label for="token">Admin token</label>
+        <input id="token" name="token" type="password" placeholder="Enter your alpha admin token" autocomplete="off" autocapitalize="off" spellcheck="false" required aria-describedby="loginHelp">
+        <p id="loginError" class="inline-error" role="alert" hidden></p>
+        <button id="connect" type="submit" class="button primary full">Connect to dashboard <span data-icon="arrow-right"></span></button>
+      </form>
+      <p id="loginHelp" class="login-foot"><span data-icon="lock"></span> Your token stays in this tab and is cleared when you disconnect.</p>
+    </div>
+
+  </section>
+
+  <div id="workspace" class="workspace" hidden>
+    <aside class="sidebar" aria-label="Admin navigation">
+      <div class="brand"><img class="brand-logo" src="__GAMESLOTH_LOGO__" alt="GameSloth-logo" width="44" height="44"><span class="brand-text">GameSloth<span class="brand-sub">ALPHA ADMIN</span></span></div>
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav-stack">
+        <button class="nav-item active" data-view="accounts" aria-current="page"><span data-icon="users"></span><span class="nav-text">Tester accounts</span><span id="navPending" class="nav-count">0</span></button>
+        <button class="nav-item" data-view="creators"><span data-icon="sparkles"></span><span class="nav-text">Creator access</span></button>
+        <button class="nav-item" data-view="founding"><span data-icon="award"></span><span class="nav-text">Founding 50</span><span id="navFounding" class="nav-count">0/50</span></button>
+        <button class="nav-item" data-view="settings"><span data-icon="settings"></span><span class="nav-text">Release settings</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="release-card"><span class="label-small">CURRENT RELEASE</span><strong id="sideMode">Closed Alpha</strong><span id="sideCapacity" class="muted">Loading access settings</span><div class="capacity-track"><span id="sideBar"></span></div></div>
+        <a class="nav-item external" href="https://gamesloth.app" target="_blank" rel="noopener noreferrer"><span data-icon="globe"></span><span class="nav-text">GameSloth website</span><span data-icon="external"></span></a>
+        <div class="admin-session"><span class="session-avatar">GS</span><div><strong>Admin workspace</strong><span><i class="live-dot"></i> Connected</span></div></div>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb">Tester accounts</strong></div><div class="top-actions"><span id="version" class="version"></span><button id="disconnect" class="button quiet small"><span data-icon="log-out"></span> Disconnect</button></div></header>
+      <main id="main" tabindex="-1">
+        <div class="page-heading"><div><div class="eyebrow">GAMESLOTH CONTROL ROOM</div><h1 id="pageTitle">Tester accounts</h1><p id="pageDescription">Review sign-ups, approve testers and manage account access.</p></div><div class="heading-actions"><button id="refresh" class="button secondary"><span data-icon="refresh"></span> Refresh</button><button id="openGrant" class="button primary"><span data-icon="plus"></span> Grant creator access</button></div></div>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <section id="metrics" class="metrics" aria-label="Alpha overview"></section>
+
+        <section id="accountsView" class="view" aria-label="Tester accounts">
+          <div class="panel">
+            <div class="panel-heading"><div><h2>Your testers</h2><p>Review sign-ups and keep everyone moving.</p></div><span id="accountsTotal" class="subtle"></span></div>
+            <div id="accountTabs" class="filter-tabs" role="group" aria-label="Account status filter">
+              <button data-status="pending" class="active" aria-pressed="true">Pending <span id="pendingCount">0</span></button>
+              <button data-status="approved" aria-pressed="false">Approved <span id="approvedCount">0</span></button>
+              <button data-status="rejected" aria-pressed="false">Rejected <span id="rejectedCount">0</span></button>
+              <button data-status="all" aria-pressed="false">All accounts <span id="allCount">0</span></button>
+            </div>
+            <div class="table-toolbar">
+              <div class="search-field"><span data-icon="search"></span><label class="sr-only" for="search">Search accounts</label><input id="search" type="search" placeholder="Search name, @handle or email…" autocomplete="off"></div>
+              <label class="sr-only" for="planFilter">Filter by plan</label><select id="planFilter"><option value="all">All plans</option><option value="FREE">Free</option><option value="SLOTH_PLUS">Sloth+</option><option value="SLOTH_PRO">Sloth Pro</option></select>
+              <label class="sr-only" for="emailFilter">Filter by email verification</label><select id="emailFilter"><option value="all">Any email status</option><option value="verified">Verified email</option><option value="unverified">Unverified email</option></select>
+              <label class="sr-only" for="sort">Sort accounts</label><select id="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="name">Name A–Z</option></select>
+            </div>
+            <p id="resultLimit" class="result-limit" hidden></p>
+            <div class="table-scroll"><table><caption class="sr-only">GameSloth tester accounts</caption><thead><tr><th scope="col">PLAYER</th><th scope="col">ACCESS</th><th scope="col">PLAN</th><th scope="col">SIGNED UP</th><th scope="col" class="align-right">ACTIONS</th></tr></thead><tbody id="accountRows"></tbody></table></div>
+            <div id="accountEmpty" class="empty-state" hidden></div>
+            <footer class="table-footer"><p id="resultCount" aria-live="polite"></p><div class="pagination"><button id="prevPage" class="button secondary small" aria-label="Previous page"><span data-icon="chevron-left"></span></button><span id="pageCount"></span><button id="nextPage" class="button secondary small" aria-label="Next page"><span data-icon="chevron-right"></span></button></div></footer>
+          </div>
+          <p class="page-note"><span data-icon="info"></span> Open a player’s details to manage plans, verification and account recovery.</p>
+        </section>
+
+        <section id="creatorsView" class="view" aria-label="Creator access" hidden>
+          <div class="creator-intro"><span class="intro-icon" data-icon="sparkles"></span><div><strong>Creator &amp; squad access</strong><p>Give the host Sloth+ or Sloth Pro. Their friends can contribute POVs on Free accounts. Complimentary access keeps their normal billing plan intact.</p></div></div>
+          <div class="panel"><div class="panel-heading"><div><h2>Complimentary access</h2><p>Keep an eye on active grants and upcoming renewals.</p></div><span id="grantTotal" class="subtle"></span></div>
+            <div class="table-toolbar"><div class="search-field"><span data-icon="search"></span><label class="sr-only" for="creatorSearch">Search creator grants</label><input id="creatorSearch" type="search" placeholder="Search creator, email or note…"></div><label class="sr-only" for="grantFilter">Filter creator grants</label><select id="grantFilter"><option value="all">All grants</option><option value="active">Active</option><option value="expiring">Expiring within 7 days</option><option value="expired">Expired</option></select></div>
+            <div class="table-scroll"><table><caption class="sr-only">Complimentary creator plans</caption><thead><tr><th scope="col">CREATOR</th><th scope="col">GRANTED PLAN</th><th scope="col">EXPIRY</th><th scope="col">PRIVATE NOTE</th><th scope="col" class="align-right">ACTIONS</th></tr></thead><tbody id="grantRows"></tbody></table></div><div id="grantEmpty" class="empty-state" hidden></div><footer class="table-footer"><p id="grantResultCount" aria-live="polite"></p></footer>
+          </div>
+        </section>
+
+        <section id="foundingView" class="view" aria-label="Founding 50" hidden>
+          <div class="founding-hero">
+            <div><span class="eyebrow">EARLY USER REWARD</span><h2>Founding 50</h2><p>The first 50 squad hosts who finish a Sloth Sync Moment with at least two collected POVs get Sloth+ for two years.</p></div>
+            <div class="founding-score"><strong id="foundingCount">0 / 50</strong><span id="foundingStatus" class="badge approved">Active</span></div>
+          </div>
+          <div class="founding-progress"><div class="capacity-track"><span id="foundingBar"></span></div><div><span id="foundingRemaining">50 spots left</span><span>One reward per account · automatic after a successful squad Moment</span></div></div>
+          <div class="founding-rules">
+            <div><strong>Qualifies</strong><span>Hosted Sloth Sync Moment with 2+ ready POVs.</span></div>
+            <div><strong>Reward</strong><span>Sloth+ for two calendar years from the claim date.</span></div>
+            <div><strong>Separate from billing</strong><span>Paid plans and creator grants stay untouched.</span></div>
+          </div>
+          <div class="panel founding-panel"><div class="panel-heading"><div><h2>Claimed spots</h2><p>Claims are automatic and ordered by the moment they were earned.</p></div><div class="founding-actions"><span id="foundingTotal" class="subtle"></span><button id="foundingToggle" class="button secondary small" type="button">Pause reward</button></div></div>
+            <div class="table-scroll"><table><caption class="sr-only">Founding 50 winners</caption><thead><tr><th scope="col">#</th><th scope="col">PLAYER</th><th scope="col">CLAIMED</th><th scope="col">POVS</th><th scope="col">SLOTH+ UNTIL</th></tr></thead><tbody id="foundingRows"></tbody></table></div>
+            <div id="foundingEmpty" class="empty-state" hidden></div>
+            <footer class="table-footer"><p id="foundingFoot">Waiting for the first qualifying squad Moment.</p></footer>
+          </div>
+          <p class="page-note"><span data-icon="info"></span> A spot is only claimed after the host reports a completed Moment with at least two ready squad POVs. Failed Moments do not count.</p>
+        </section>
+
+        <section id="settingsView" class="view" aria-label="Release settings" hidden>
+          <form id="settingsForm" class="panel settings-panel"><div class="panel-heading"><div><h2>Who gets in?</h2><p>Choose how new accounts receive access to GameSloth.</p></div><span id="savedMode" class="badge"></span></div><div class="settings-body">
+            <label for="accessMode">Release mode</label><select id="accessMode"><option value="closed_alpha">Closed Alpha</option><option value="open_beta">Open Beta</option></select><p id="modeHelp" class="field-help"></p>
+            <div class="settings-divider"></div><label for="testerLimit">Approved tester limit</label><input id="testerLimit" type="number" min="1" max="10000" step="1" required><p id="limitHelp" class="field-help">The maximum number of accounts you can approve during Closed Alpha.</p>
+            <div id="capacitySummary" class="capacity-summary"></div>
+          </div><footer class="settings-footer"><span id="settingsStatus" class="muted">Changes apply when you save.</span><button id="saveSettings" class="button primary" type="submit">Save changes</button></footer></form>
+          <p class="page-note"><span data-icon="info"></span> Switching to Open Beta also approves every currently pending account.</p>
+        </section>
+        <footer class="workspace-footer"><span>GameSloth Alpha Admin</span><span id="lastUpdated" aria-live="polite"></span></footer>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="accountDialog" class="drawer" aria-labelledby="accountTitle"><div class="drawer-head"><span class="eyebrow">PLAYER DETAILS</span><button class="button icon-button quiet" data-close="accountDialog" aria-label="Close player details"><span data-icon="x"></span></button></div><p id="accountError" class="inline-error" role="alert" hidden></p><div id="accountDetails"></div></dialog>
+
+  <dialog id="grantDialog" class="modal" aria-labelledby="grantTitle"><form id="grantForm"><div class="modal-head"><div><span class="eyebrow">CREATOR ACCESS</span><h2 id="grantTitle">Grant creator access.</h2></div><button class="button icon-button quiet" type="button" data-close="grantDialog" aria-label="Close creator access"><span data-icon="x"></span></button></div><div class="modal-body"><p class="muted">Grant a complimentary plan to an existing GameSloth account.</p><label for="grantHandle">GameSloth handle</label><input id="grantHandle" placeholder="@creatorhandle" maxlength="64" autocomplete="off" autocapitalize="off" spellcheck="false" required><div class="form-grid"><div><label for="grantPlan">Plan</label><select id="grantPlan"><option value="SLOTH_PRO">Sloth Pro</option><option value="SLOTH_PLUS">Sloth+</option></select></div><div><label for="grantDuration">Duration from today</label><select id="grantDuration"><option value="30">30 days</option><option value="90" selected>90 days</option><option value="180">180 days</option><option value="365">1 year</option><option value="0">Until revoked</option></select></div></div><label for="grantNote">Private note <span class="optional">Optional</span></label><textarea id="grantNote" rows="3" maxlength="240" placeholder="Creator, campaign or reason for access"></textarea><p id="grantExpiry" class="field-help"></p><label class="checkbox-row"><input id="grantApprove" type="checkbox" checked><span>Also approve this account for the Closed Alpha</span></label><p id="grantError" class="inline-error" role="alert" hidden></p></div><footer class="modal-footer"><button type="button" class="button secondary" data-close="grantDialog">Cancel</button><button id="grantAccess" type="submit" class="button primary">Grant access</button></footer></form></dialog>
+
+  <dialog id="confirmDialog" class="modal compact" aria-labelledby="confirmTitle"><div class="modal-head"><h2 id="confirmTitle">Confirm change</h2><button class="button icon-button quiet" data-close="confirmDialog" aria-label="Close confirmation"><span data-icon="x"></span></button></div><div class="modal-body"><p id="confirmText"></p><p id="confirmError" class="inline-error" role="alert" hidden></p></div><footer class="modal-footer"><button id="confirmCancel" class="button secondary" data-close="confirmDialog">Cancel</button><button id="confirmAction" class="button primary">Confirm</button></footer></dialog>
+
+  <dialog id="linkDialog" class="modal compact" aria-labelledby="linkTitle"><div class="modal-head"><h2 id="linkTitle">Account recovery link</h2><button class="button icon-button quiet" data-close="linkDialog" aria-label="Close recovery link"><span data-icon="x"></span></button></div><div class="modal-body"><p>Share this link privately with the account owner.</p><label class="sr-only" for="recoveryUrl">Recovery link</label><input id="recoveryUrl" readonly><p id="linkExpiry" class="field-help"></p><p id="copyStatus" role="status"></p></div><footer class="modal-footer"><button class="button secondary" data-close="linkDialog">Close</button><button id="copyLink" class="button primary"><span data-icon="copy"></span> Copy link</button></footer></dialog>
+  <div id="toast" class="toast" role="status" hidden><span id="toastText"></span><button id="closeToast" aria-label="Dismiss notification"><span data-icon="x"></span></button></div>
+  <script src="/alpha/admin.js" defer></script>
+</body>
+</html>
