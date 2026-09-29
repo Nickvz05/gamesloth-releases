@@ -1,0 +1,19 @@
+{
+  "name": "gamesloth-server",
+  "version": "0.34.0",
+  "private": true,
+  "description": "GameSloth backend with opt-in Discord leaderboard, public product stats and controlled alpha access",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check db.js && node --check leaderboard.js"
+  },
+  "engines": {
+    "node": ">=20 <23"
+  },
+  "dependencies": {
+    "pg": "^8.16.3",
+    "ws": "^8.18.3",
+    "stripe": "^22.3.2"
+  }
+}
